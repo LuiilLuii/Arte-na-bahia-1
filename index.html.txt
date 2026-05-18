@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArteBahia Jovem</title>
+
+    <!-- PWA / Instalação no celular -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#008c4a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ArteBahia">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2970/2970785.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2970/2970785.png">
+
+    <!-- Estilos e fontes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Nunito:wght@400;600;800&family=Shrikhand&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background-color: #f4ecd8;
+            background-image: radial-gradient(#d5caba 2px, transparent 2px);
+            background-size: 24px 24px;
+            user-select: none; 
+        }
+        .font-display { font-family: 'Carter One', cursive; letter-spacing: 0.5px; }
+        .font-title { font-family: 'Shrikhand', cursive; letter-spacing: 1px; }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #f4ecd8; border-left: 3px solid #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #e63946; border: 3px solid #1a1a1a; border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: #d90429; }
+        .naif-border {
+            border: 3px solid #1a1a1a;
+            border-radius: 16px;
+            box-shadow: 6px 6px 0px 0px #1a1a1a;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+        .naif-border:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px 0px #1a1a1a;
+        }
+        .naif-btn {
+            border: 3px solid #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px 0px #1a1a1a;
+            transition: all 0.1s ease;
+            font-weight: 800;
+        }
+        .naif-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #1a1a1a;
+        }
+        .naif-btn:active {
+            transform: translate(4px, 4px) !important;
+            box-shadow: 0px 0px 0px 0px #1a1a1a !important;
+        }
+        .tab-btn {
+            border: 2px solid #1a1a1a;
+            background-color: #fff;
+            color: #1a1a1a;
+            box-shadow: 2px 2px 0px 0px #1a1a1a;
+        }
+        .tab-btn.active { 
+            background-color: #ffb703;
+            box-shadow: 4px 4px 0px 0px #1a1a1a;
+            transform: translate(-2px, -2px);
+        }
+        .details-bg {
+            background-color: #fdfaf6;
+            background-image: radial-gradient(#fb8500 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .heart-btn {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .heart-btn.active {
+            fill: #ef476f;
+            color: #ef476f;
+        }
+    </style>
+</head>
+<body class="text-gray-900 antialiased h-screen flex flex-col">
+
+    <header class="bg-[#008c4a] text-white border-b-4 border-[#1a1a1a] z-10 sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between md:h-20 items-center py-3 md:py-0">
+                <div class="flex items-center space-x-3 cursor-pointer mb-3 md:mb-0 transform hover:scale-105 transition" onclick="location.reload()">
+                    <div class="bg-[#ffb703] p-2 rounded-full border-2 border-[#1a1a1a] shadow-[2px_2px_0px_0px_#1a1a1a]">
+                        <i data-lucide="palette" class="w-6 h-6 text-[#1a1a1a]"></i>
+                    </div>
+                    <span class="font-title text-2xl tracking-wide text-[#ffb703] drop-shadow-[2px_2px_0px_#1a1a1a]">ArteBahia Jovem</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-3" id="nav-menu">
+                    <button onclick="filterOpportunities('all', this)" class="tab-btn active font-display px-4 py-1.5 rounded-full text-sm transition">Todas</button>
+                    <button onclick="filterOpportunities('edital', this)" class="tab-btn font-display px-4 py-1.5 rounded-full text-sm transition hover:bg-[#118ab2] hover:text-white">Editais</button>
+                    <button onclick="filterOpportunities('residencia', this)" class="tab-btn font-display px-4 py-1.5 rounded-full text-sm transition hover:bg-[#9d4edd] hover:text-white">Residências</button>
+                    <button onclick="filterOpportunities('estagio', this)" class="tab-btn font-display px-4 py-1.5 rounded-full text-sm transition hover:bg-[#06d6a0] hover:text-black">Estágios</button>
+                    <button onclick="filterOpportunities('vaga', this)" class="tab-btn font-display px-4 py-1.5 rounded-full text-sm transition hover:bg-[#ffb703] hover:text-black">Vagas/Freela</button>
+                    <button onclick="filterOpportunities('feira', this)" class="tab-btn font-display px-4 py-1.5 rounded-full text-sm transition hover:bg-[#ef476f] hover:text-white">Feiras</button>
+                    <button onclick="filterOpportunities('recurso', this)" class="tab-btn font-display px-4 py-1.5 rounded-full text-sm transition hover:bg-[#bc6c25] hover:text-white">Sobrevivência</button>
+                    <button onclick="filterFavorites()" class="tab-btn font-display px-4 py-1.5 rounded-full text-sm transition hover:bg-[#ef476f] hover:text-white flex items-center gap-1">
+                        <i data-lucide="heart" class="w-4 h-4"></i> Favoritos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Frase do dia -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div class="naif-border bg-[#ffb703] p-4 text-center transform -rotate-1">
+            <p class="font-display text-xl md:text-2xl text-[#1a1a1a]" id="daily-quote"></p>
+        </div>
+    </div>
+
+    <main class="flex-grow overflow-y-auto w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative" id="main-content">
+        <!-- Barra de Busca -->
+        <div class="naif-border p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between bg-[#ffe8d6]">
+            <div class="relative w-full md:w-2/5" style="user-select: text;">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i data-lucide="search" class="h-6 w-6 text-[#1a1a1a]"></i>
+                </div>
+                <input type="text" id="search-input" placeholder="Buscar cargo, cidade, habilidade..." class="block w-full pl-12 pr-4 py-3 border-3 border-[#1a1a1a] rounded-xl focus:outline-none focus:ring-0 focus:bg-white font-bold text-[#1a1a1a] shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.1)]">
+            </div>
+            <div class="flex gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+                <select id="region-filter" class="block w-full md:w-auto px-4 py-3 font-bold border-[#1a1a1a] border-3 rounded-xl shadow-[2px_2px_0px_0px_#1a1a1a] focus:outline-none cursor-pointer bg-white">
+                    <option value="all">📍 Todas as Regiões</option>
+                    <option value="reconcavo">Recôncavo</option>
+                    <option value="salvador">Salvador</option>
+                    <option value="interior">Interior</option>
+                </select>
+                 <select id="category-filter" class="block w-full md:w-auto px-4 py-3 font-bold border-[#1a1a1a] border-3 rounded-xl shadow-[2px_2px_0px_0px_#1a1a1a] focus:outline-none cursor-pointer bg-white">
+                    <option value="all">🎨 Todas as Áreas</option>
+                    <option value="artes-visuais">Artes Visuais & Design</option>
+                    <option value="audiovisual">Audiovisual</option>
+                    <option value="producao">Produção Cultural</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="opportunities-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3"></div>
+    </main>
+
+    <script>
+        // ====== FRASES MOTIVACIONAIS DE ARTISTAS BAIANOS ======
+        const QUOTES = [
+            "“O grande poema da vida baiana, eu escrevi com meus lápis e meus pincéis. Minha obra é a vida da Bahia, é o povo da Bahia. Não sei de outro artista brasileiro que tenha sido assim tão fiel a sua gente!” – Carybé, artista plástico (Fonte: Frases Doug Blog)",
+            "“Na Bahia tive aberto os olhos para a arte, pude transformá-la em imortalidade!” – Carybé (Fonte: Frases Doug Blog)",
+            "“Salvador é uma cidade que parece encomendada para artistas plásticos, para escritores, cineastas. Enfim, tudo lá é uma espécie de incubadeira para essa gente.” – Carybé, em entrevista a Clarice Lispector (Fonte: Elfikurten)",
+            "“O feitiço da Bahia começa pela cozinha. Você só se alimenta de comidas sagradas.” – Carybé (Fonte: Elfikurten)",
+            "“Arte é paixão.” – Carybé (Fonte: Frases Doug Blog)",
+            "“A música popular é o chão no alto, acima de tudo. Acima de tudo porque ela está abaixo de tudo, na raiz, na própria semente...” – Gilberto Gil (Fonte: Revista Somtrês, 1985)",
+            "“Eu soube que a música era minha linguagem, mesmo. Que a música ia me levar a conhecer o mundo, ia me levar a outras terras.” – Gilberto Gil (Fonte: Jornal O Sul)",
+            "“Felicidade. É só o que se faz, é só o que eu faço. O remédio para a dor, o bálsamo para a alma ferida...” – Gilberto Gil (Fonte: GQ Globo)",
+            "“Meu sonho é chegar a essa perfeição de ser o autor de uma 'ciranda, cirandinha', uma coisa que se perca no meio do povo.” – Dorival Caymmi (Fonte: Revista Veja, 1972)",
+            "“A Bahia é o começo de tudo, é o começo do Brasil, então faz sentido tudo que é da Bahia ser universal brasileiro.” – Baco Exu do Blues (Fonte: CNN Brasil)",
+            "“Nunca conheci nenhum lugar que me brilhasse os olhos que nem a minha terra. Eu posso viajar o mundo todo e eu sempre vou voltar pra Bahia.” – Baco Exu do Blues (Fonte: CNN Brasil)",
+            "“Quero ser um ícone sem ter que me prostituir para a fama, sem ter que me prostituir para a indústria, podendo respeitar minha individualidade, minha intimidade.” – Luedji Luna (Fonte: G1)",
+            "“O primeiro desafio é ser mulher negra num país racista como o nosso. Em segundo lugar é ser mulher preta compositora, o desafio de cantar as próprias canções, pois quem dá escuta as mulheres?” – Luedji Luna (Fonte: Correio Nagô)",
+            "“A nossa experiência enquanto artistas individuais que se juntam é quase um quasar, explosão de uma estrela mesmo.” – Xênia França (Fonte: Salvador Entretenimento)",
+            "“Sempre que algum contexto de racismo ou machismo me enfraquece, olho para dentro e vejo que tem algo muito mais brilhante e especial dentro de mim.” – Xênia França (Fonte: Pensador)",
+            "“Toda mulher negra move o mundo.” – Larissa Luz (Fonte: Billboard Brasil)",
+            "“Eu sou uma mulher livre da sina e da obsessão. Eu sou o que eu quiser. Decisão é consequência.” – Larissa Luz (Fonte: Revista Continente)",
+            "“Precisamos da confirmação desse empoderamento.” – Margareth Menezes (Fonte: Gshow)",
+            "“Conquistei tudo graças à minha ousadia.” – Margareth Menezes (Fonte: Blog do Arcanjo)",
+            "“Não faz nada por mim, não cara. Faça por você. É o teu corpo, é a tua vida! A gente tem que se responsabilizar pelas nossas escolhas.” – Pitty (Fonte: Mensagens com Amor)",
+            "“Ser jovem não é desculpa para ser medíocre.” – Pitty (Fonte: Mensagens com Amor)",
+            "“Arriscar viver mais intensamente e com mais verdade foi um chamado que recebi muito jovem da vida.” – Vall Santos (Fonte: Falando em Sol)",
+            "“Artista baiano se vira em qualquer lugar.” – Tenison Del Rey (Fonte: Metro1)",
+            "“Quando a carreira é muito longa, ela acaba montando estratégias por si só.” – Bell Marques (Fonte: Popline)",
+            "“Vamos fazer projetos. Vamos pensar em fomentar coisas.” – Lazzo Matumbi (Fonte: Metro1)",
+            "“Tem que haver um respeito com o compositor e com a cultura.” – Gilson Babilônia (Fonte: Bahia Notícias)",
+            "“Tem um toque de Bahia em tudo que a gente ouve no Brasil.” – Dan e Arthur, Filhos de Jorge (Fonte: Bahia Notícias)",
+            "“Forró pra mim tem que ter saudade, tem que ter chamego, tem que ter amor, forró pra mim tem que ter alegria...” – Truvão Sanfoneiro (Fonte: Notícia Limpa)",
+            "“A música é trabalho e também missão. Consigo viver disso.” – Rachel Reis (Fonte: Forbes Brasil)",
+            "“Eu não queria ser cantora, eu gostava de cantar.” – Fafá de Belém (Fonte: Metro1)",
+            "“Eu vim pra confundir, não pra explicar.” – Tom Zé (Fonte: Opinião em Pauta)",
+            "“A Bahia, Estação primeira do Brasil.” – Caetano Veloso (Fonte: Letras.com.br)",
+            "“Bahia me inspira, é minha fonte, minha régua e compasso.” – José Carlos Capinam (Fonte: Metro1)",
+            "“Pra você se arriscar a dizer que é poeta é preciso coragem.” – José Carlos Capinam (Fonte: Metro1)",
+            "“A vida me deu mais do que pedi e mereci. Não me falta nada.” – Jorge Amado (Fonte: Blog Lucelia Marinho)",
+            "“Usei a minha arma de escritor - a palavra - contra a injustiça e a miséria...” – Jorge Amado (Fonte: Blog Lucelia Marinho)",
+            "“Os homens valentes têm uma estrela em lugar do coração.” – Jorge Amado (Fonte: Frases.blog.br)",
+            "“Viver é quase um milagre, e esse milagre o povo realiza diariamente.” – Jorge Amado (Fonte: Blog Jorge Amado)",
+            "“Enquanto houver quem ouça, haverá quem conte histórias.” – João Ubaldo Ribeiro (Fonte: Boa Vontade)",
+            "“A importância da utopia é a de mover segmentos da população mais carente que estão insatisfeitos...” – Elenilson Nascimento (Fonte: Comunidade Resenhas Literárias)",
+            "“Se a tinta acabar, use terra. Se o pincel quebrar, use os dedos.” – Provérbio de ateliê comunitário",
+            "“Na Bahia, cada esquina é um ateliê.” – Anônimo das feiras de Cachoeira",
+            "“A arte não é um espelho para refletir o mundo, mas um martelo para forjá-lo.” – Vladimir Maiakovski, ecoado por artistas do Recôncavo",
+            "“Pintar é silenciar o ruído do mundo e ouvir a voz das raízes.” – Mestre Didi",
+            "“Arte é trabalho, não dom. Organize sua luta e sua palheta.” – Coletivo ACS",
+            "“A juventude baiana já nasce com o ritmo e a cor. Só falta o papel e a coragem.” – FUNCEB"
+        ];
+
+        // ====== OPORTUNIDADES ======
+        const mockOpportunities = [
+            {
+                id: 101, type: 'vaga', title: 'Ilustrador(a) de Estamparia (PJ)', organization: 'Marca de Moda Baiana Independente',
+                region: 'salvador', regionLabel: 'Salvador (Híbrido)', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Design',
+                deadline: '2026-06-20', value: 'R$ 3.500,00/mês + Participação', 
+                description: 'Vaga para artista visual/ilustrador criar estampas exclusivas para coleções de verão com temática afro-diaspórica.',
+                tags: ['Vaga PJ', 'Moda', 'Ilustração Digital'],
+                proposal: 'A marca busca um artista com traço autoral para desenvolver padrões têxteis (rapport) e estampas localizadas. O trabalho envolve pesquisa de tendências e adaptação de artes para o tecido.',
+                requirements: ['Domínio de Adobe Illustrator e Photoshop ou Procreate', 'Portfólio com foco em ilustração', 'Não é necessário ensino superior, apenas portfólio forte'],
+                activities: ['Criar 4 estampas principais por mês', 'Reuniões quinzenais de criação com estilistas', 'Preparar fechamento de arquivo para a fábrica'],
+                link: 'https://br.linkedin.com/jobs/ilustrador-vagas'
+            },
+            {
+                id: 102, type: 'vaga', title: 'Assistente de Direção de Arte (Freela)', organization: 'Produtora Audiovisual Olho de Vidro',
+                region: 'reconcavo', regionLabel: 'Cachoeira, Recôncavo', category: 'audiovisual', categoryLabel: 'Audiovisual / Cenografia',
+                deadline: '2026-05-25', value: 'Cachê R$ 1.800 (Por 5 diárias)', 
+                description: 'Trabalho temporário para auxiliar na montagem de cenários e compra de objetos para a gravação de um videoclipe no Recôncavo.',
+                tags: ['Freelance', 'Audiovisual', 'Cenografia'],
+                proposal: 'Gravação de um videoclipe de artista nacional na cidade de Cachoeira. Precisamos de mãos locais para ajudar a erguer os cenários e pensar na identidade visual do set.',
+                requirements: ['Residir no Recôncavo', 'Habilidade manual (pintura, montagem leve)', 'Disponibilidade total na semana da gravação'],
+                activities: ['Garimpar objetos em feiras e brechós', 'Pintar painéis de fundo (chroma e arte)', 'Ajudar a manter a continuidade visual no set de filmagem'],
+                link: 'https://cultura.ba.gov.br/'
+            },
+            {
+                id: 103, type: 'vaga', title: 'Arte-Educador - Oficinas de Desenho', organization: 'ONG ArteMuda',
+                region: 'salvador', regionLabel: 'Salvador (Periferia)', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Educação',
+                deadline: '2026-06-10', value: 'CLT - R$ 2.200,00 + Benefícios', 
+                description: 'Contratação CLT para ministrar aulas de desenho básico e quadrinhos para adolescentes em situação de vulnerabilidade.',
+                tags: ['Vaga CLT', 'Educação', 'Social'],
+                proposal: 'O projeto busca utilizar a arte como ferramenta de inclusão. O educador terá liberdade para montar sua ementa de aulas.',
+                requirements: ['Experiência prévia (mesmo que informal) ensinando arte', 'Empatia e didática', 'Ensino médio completo'],
+                activities: ['Dar 2 aulas por dia (turno tarde)', 'Organizar uma exposição dos alunos no fim do semestre', 'Comprar e gerenciar materiais artísticos'],
+                link: 'https://ongartemuda.org.br/'
+            },
+            {
+                id: 201, type: 'feira', title: 'Convocatória: Feira de Artes Gráficas PrintBahia', organization: 'Coletivo PrintBahia',
+                region: 'salvador', regionLabel: 'Salvador (MAM-BA)', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Negócios',
+                deadline: '2026-07-01', value: 'Inscrição Gratuita (Você lucra com vendas)', 
+                description: 'Chamada para ilustradores, gravuristas e fazedores de zine que desejam expor e vender seus trabalhos diretamente ao público em feira no MAM.',
+                tags: ['Feira', 'Vendas', 'Artes Gráficas', 'Zine'],
+                proposal: 'Oportunidade para jovens artistas comercializarem prints, adesivos, camisas e originais. Uma das melhores formas de levantar dinheiro rápido e criar base de clientes.',
+                requirements: ['Ter produção autoral em arte impressa', 'Poder estar presente nos dois dias de evento para vender sua arte', 'Levar sua própria estrutura de displays (se houver)'],
+                activities: ['Montar e decorar sua banca', 'Atender o público e vender suas artes', 'Fazer networking com outros artistas visuais e curadores'],
+                link: 'https://www.instagram.com/mam.bahia/'
+            },
+            {
+                id: 1, type: 'edital', title: 'Prêmio Jovem Criador Baiano', organization: 'FUNCEB',
+                region: 'salvador', regionLabel: 'Bahia (Todas as regiões)', category: 'artes-visuais', categoryLabel: 'Artes Visuais',
+                deadline: '2026-06-15', value: 'R$ 15.000,00', 
+                description: 'Edital de fomento à produção de artes visuais para jovens de 18 a 29 anos. Foco em pintura, escultura ou digital.', 
+                tags: ['Fomento', 'Jovens'],
+                proposal: 'Financiar a criação de obras de arte inéditas que reflitam a identidade da juventude baiana contemporânea.',
+                requirements: ['Ter entre 18 e 29 anos', 'Apresentar portfólio', 'Residir na Bahia'],
+                activities: ['Desenvolvimento da obra', 'Exposição coletiva de encerramento'],
+                link: 'https://fundacaocultural.ba.gov.br/'
+            },
+            {
+                id: 2, type: 'residencia', title: 'Residência Hansen Bahia (Xilogravura)', organization: 'Instituto Hansen Bahia',
+                region: 'reconcavo', regionLabel: 'Cachoeira, Recôncavo', category: 'artes-visuais', categoryLabel: 'Artes Visuais',
+                deadline: '2026-06-05', value: 'Material + Bolsa R$ 1.500', 
+                description: 'Imersão de 1 mês para aprender e produzir gravuras com mestres locais no acervo histórico.', 
+                tags: ['Xilogravura', 'Estudo'],
+                proposal: 'Preservar a técnica da xilogravura permitindo que novos artistas criem séries limitadas.',
+                requirements: ['Interesse por artes gráficas', 'Disponibilidade de tempo'],
+                activities: ['Aulas práticas', 'Produção de matrizes', 'Impressão'],
+                link: 'https://www.instagram.com/fundacaohansenbahia/'
+            },
+            {
+                id: 5, type: 'estagio', title: 'Estágio em Mediação Cultural e Acervo', organization: 'Museu de Arte Moderna (MAM-BA)',
+                region: 'salvador', regionLabel: 'Salvador', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Museus',
+                deadline: '2026-06-10', value: 'Bolsa R$ 1.100 + Auxílio', 
+                description: 'Vaga para atuar dentro do museu guiando visitantes e aprendendo sobre conservação de obras de arte.', 
+                tags: ['Estágio', 'Museu'],
+                proposal: 'Aprender na prática como funciona uma instituição de arte.',
+                requirements: ['Cursando Artes Visuais ou afins a partir do 3º semestre'],
+                activities: ['Visitas guiadas', 'Auxílio na montagem de exposições'],
+                link: 'http://www.mam.ba.gov.br/'
+            },
+            {
+                id: 300, type: 'recurso', title: 'Ateliê Coletivo do Subúrbio (ACS)', organization: 'Coletivo ACS',
+                region: 'salvador', regionLabel: 'Plataforma, Salvador', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Criação',
+                deadline: 'contínuo', value: 'Contribuição simbólica (ou isento)', 
+                description: 'Espaço compartilhado com cavaletes, tintas básicas e ferramentas. Ideal para quem não tem local para criar.',
+                tags: ['Ateliê', 'Coletivo', 'Baixo Custo', 'Material Compartilhado'],
+                proposal: 'Rede de artistas periféricos que mantém um galpão com mesas, iluminação e alguns materiais. Você só precisa levar sua tela ou papel.',
+                requirements: ['Residir na região metropolitana de Salvador', 'Disposição para ajudar na limpeza coletiva'],
+                activities: ['Produção artística livre', 'Participação em mutirões de manutenção', 'Possibilidade de expor no espaço'],
+                link: 'https://www.instagram.com/explore/tags/atelieracoletivo/'
+            },
+            {
+                id: 301, type: 'recurso', title: 'Mapa da Tinta Barata em Salvador', organization: 'Guia de Compras do Artista Pobre',
+                region: 'salvador', regionLabel: 'Salvador (Vários bairros)', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Insumos',
+                deadline: 'contínuo', value: 'Preços populares', 
+                description: 'Lista colaborativa de lojas que vendem material de arte com preço justo ou aceitam trocas.',
+                tags: ['Materiais', 'Preço Baixo', 'Feiras', 'Trocas'],
+                proposal: 'Levantamento feito por artistas locais: papelarias no Centro, armarinhos na Liberdade, e bazares de usados.',
+                requirements: ['Nenhum', 'Levar seu próprio saco ou embalagem'],
+                activities: ['Consultar o mapa online (Instagram/@tintafacilssa)', 'Visitar os locais indicados', 'Negociar descontos para compras coletivas'],
+                link: 'https://www.instagram.com/'
+            },
+            {
+                id: 302, type: 'recurso', title: 'Programa Bolsa Artista Jovem (PBJ)', organization: 'Secretaria de Cultura de Salvador',
+                region: 'salvador', regionLabel: 'Salvador', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Fomento',
+                deadline: '2026-08-30', value: 'Bolsa mensal de R$ 800 + Material', 
+                description: 'Auxílio financeiro e acompanhamento para artistas de baixa renda desenvolverem projeto autoral.',
+                tags: ['Bolsa', 'Baixa Renda', 'Jovens'],
+                proposal: 'Programa municipal voltado exclusivamente para jovens em situação de vulnerabilidade. Inclui verba para compra de material e mentoria.',
+                requirements: ['Comprovar renda familiar de até 2 salários mínimos', 'Ter entre 18 e 29 anos', 'Portfólio simples (pode ser caderno de desenho)'],
+                activities: ['Participar de 3 encontros de formação', 'Criar um projeto artístico', 'Apresentar resultado em exposição comunitária'],
+                link: 'https://cultura.salvador.ba.gov.br/'
+            },
+            {
+                id: 303, type: 'recurso', title: 'Feira de Trocas de Materiais Artísticos', organization: 'Movimento Arte Solidária',
+                region: 'reconcavo', regionLabel: 'Cachoeira e Santo Amaro', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Economia Solidária',
+                deadline: '2026-07-15', value: 'Grátis (traga algo para trocar)', 
+                description: 'Encontro trimestral onde artistas trocam tintas, pincéis, telas, livros e técnicas entre si, sem dinheiro.',
+                tags: ['Troca', 'Gratuito', 'Economia Solidária'],
+                proposal: 'Espaço de partilha horizontal. Você leva o que não usa mais e pega o que precisa. Também rolam oficinas relâmpago.',
+                requirements: ['Levar pelo menos um item de arte em bom estado para doar/trocar', 'Respeitar a vez de cada pessoa'],
+                activities: ['Organizar e expor seus itens', 'Conversar com outros artistas', 'Participar de rodas de conversa sobre arte e resistência'],
+                link: 'https://www.facebook.com/groups/artesolidaria/'
+            },
+            {
+                id: 304, type: 'recurso', title: 'Oficina de Arte com Material Reciclado', organization: 'Ponto de Cultura Mestre Bimba',
+                region: 'salvador', regionLabel: 'São Cristóvão, Salvador', category: 'artes-visuais', categoryLabel: 'Artes Visuais / Formação',
+                deadline: 'contínuo', value: 'Totalmente gratuito', 
+                description: 'Aprenda a fazer tintas naturais, papel machê e esculturas com objetos descartados.',
+                tags: ['Reciclagem', 'Curso Grátis', 'Sustentabilidade'],
+                proposal: 'Transformar lixo em arte e em fonte de renda. Oficina prática ministrada por artistas populares.',
+                requirements: ['Inscrição prévia (vagas limitadas)', 'Levar sua própria garrafa pet ou papelão'],
+                activities: ['Produção de pigmentos com terra e vegetais', 'Modelagem com papel machê', 'Criação de peças para venda na feira do bairro'],
+                link: 'https://www.instagram.com/pontodeculturamestrebimba/'
+            }
+        ];
+
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let regionQuery = 'all';
+        let categoryQuery = 'all';
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+        function saveFavorites() {
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+
+        function toggleFavorite(id) {
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast('Removido dos favoritos', 'info');
+            } else {
+                favorites.push(id);
+                showToast('Adicionado aos favoritos! ❤️', 'success');
+            }
+            saveFavorites();
+            renderOpportunities();
+        }
+
+        function filterFavorites() {
+            currentFilter = 'favorites';
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const favBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.innerText.includes('Favoritos'));
+            if (favBtn) favBtn.classList.add('active');
+            renderOpportunities();
+        }
+
+        function calculateDaysLeft(deadline) {
+            if (deadline === 'contínuo') return -999;
+            const today = new Date('2026-05-17');
+            const deadlineDate = new Date(deadline);
+            return Math.ceil((deadlineDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        }
+
+        function createOpportunityCard(opp) {
+            const daysLeft = calculateDaysLeft(opp.deadline);
+            const isFav = favorites.includes(opp.id);
+
+            let typeConfig = {
+                'edital': { label: 'EDITAL', color: 'bg-[#118ab2] text-white' },
+                'residencia': { label: 'RESIDÊNCIA', color: 'bg-[#9d4edd] text-white' },
+                'estagio': { label: 'ESTÁGIO', color: 'bg-[#06d6a0] text-[#1a1a1a]' },
+                'vaga': { label: 'VAGA / FREELA', color: 'bg-[#ffb703] text-[#1a1a1a]' },
+                'feira': { label: 'FEIRA / VENDA', color: 'bg-[#ef476f] text-white' },
+                'recurso': { label: 'RECURSO', color: 'bg-[#bc6c25] text-white' }
+            };
+
+            const cfg = typeConfig[opp.type];
+            let urgencyVisual = '';
+            if (daysLeft === -999) {
+                urgencyVisual = '<span class="bg-[#bc6c25] text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-[#1a1a1a]">Sempre disponível</span>';
+            } else if (daysLeft < 0) {
+                urgencyVisual = '<span class="bg-[#1a1a1a] text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-[#1a1a1a]">Encerrado</span>';
+            } else {
+                urgencyVisual = `<span class="bg-white text-[#1a1a1a] px-3 py-1 rounded-full text-xs font-bold border-2 border-[#1a1a1a] flex items-center shadow-[2px_2px_0px_0px_#1a1a1a]">
+                    <i data-lucide="clock" class="w-3 h-3 mr-1"></i> ${daysLeft} dias
+                 </span>`;
+            }
+
+            return `
+                <div class="naif-border flex flex-col h-full overflow-hidden">
+                    <div class="${cfg.color} p-4 border-b-3 border-[#1a1a1a] flex justify-between items-center">
+                        <span class="font-display text-sm tracking-wider">${cfg.label}</span>
+                        ${urgencyVisual}
+                    </div>
+                    <div class="p-5 flex-grow bg-white">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-display text-xl text-[#1a1a1a] leading-tight">${opp.title}</h3>
+                            <i data-lucide="heart" class="heart-btn w-6 h-6 ${isFav ? 'active' : ''} text-[#1a1a1a] hover:text-[#ef476f]"
+                               onclick="event.stopPropagation(); toggleFavorite(${opp.id})"></i>
+                        </div>
+                        <p class="text-sm font-bold text-[#e63946] mb-4 flex items-center">
+                            <i data-lucide="building" class="w-4 h-4 mr-1"></i> ${opp.organization}
+                        </p>
+                        <div class="space-y-2 mb-4 bg-[#f4ecd8] p-3 rounded-xl border-2 border-[#1a1a1a]">
+                            <div class="flex items-center text-sm text-[#1a1a1a] font-bold">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-[#008c4a]"></i> ${opp.regionLabel}
+                            </div>
+                            <div class="flex items-center text-sm text-[#008c4a] font-extrabold text-lg">
+                                <i data-lucide="banknote" class="w-5 h-5 mr-2"></i> ${opp.value}
+                            </div>
+                        </div>
+                        <p class="text-[#1a1a1a] font-medium leading-relaxed line-clamp-3 mb-4">${opp.description}</p>
+                    </div>
+                    <div class="p-4 bg-white border-t-3 border-[#1a1a1a] mt-auto">
+                        <button onclick="openDetails(${opp.id})" class="naif-btn w-full bg-[#1a1a1a] hover:bg-[#333] text-white py-3 px-4 flex justify-center items-center text-lg">
+                            VER DETALHES <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOpportunities() {
+            const grid = document.getElementById('opportunities-grid');
+            let filtered = mockOpportunities.filter(opp => {
+                if (currentFilter === 'favorites') {
+                    return favorites.includes(opp.id);
+                }
+                if (currentFilter !== 'all' && opp.type !== currentFilter) return false;
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase();
+                    if (!opp.title.toLowerCase().includes(q) && !opp.description.toLowerCase().includes(q)) return false;
+                }
+                if (regionQuery !== 'all' && opp.region !== regionQuery && opp.region !== 'todas') return false;
+                if (categoryQuery !== 'all' && opp.category !== categoryQuery) return false;
+                return true;
+            });
+            
+            if(filtered.length === 0) {
+                grid.innerHTML = `
+                <div class="col-span-full py-16 text-center">
+                    <div class="inline-block bg-white naif-border p-8">
+                        <i data-lucide="frown" class="w-16 h-16 mx-auto mb-4 text-[#ef476f]"></i>
+                        <h2 class="font-display text-2xl text-[#1a1a1a] mb-2">Vixe! Nada encontrado.</h2>
+                        <p class="text-lg font-bold text-gray-600">Tente mudar os filtros ou adicionar favoritos.</p>
+                    </div>
+                </div>`;
+            } else {
+                grid.innerHTML = filtered.map(createOpportunityCard).join('');
+            }
+            lucide.createIcons();
+        }
+
+        function filterOpportunities(type, btnElement) {
+            currentFilter = type;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+            const favBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.innerText.includes('Favoritos'));
+            if (favBtn && type !== 'favorites') favBtn.classList.remove('active');
+            renderOpportunities();
+        }
+
+        function openDetails(id) {
+            const opp = mockOpportunities.find(o => o.id === id);
+            if(!opp) return;
+            const mainContent = document.getElementById('main-content');
+            const isFav = favorites.includes(id);
+            
+            const renderList = (items, icon, color) => {
+                if(!items || items.length === 0) return '<p class="text-gray-500 font-bold italic">Não detalhado.</p>';
+                return `<ul class="space-y-4 mt-3">${items.map(item => `
+                    <li class="flex items-start bg-white p-3 border-2 border-[#1a1a1a] rounded-lg shadow-[2px_2px_0px_0px_#1a1a1a]">
+                        <div class="bg-[${color}] p-1 rounded border border-[#1a1a1a] mr-3 mt-0.5">
+                            <i data-lucide="${icon}" class="w-4 h-4 text-[#1a1a1a]"></i>
+                        </div>
+                        <span class="text-[#1a1a1a] font-bold">${item}</span>
+                    </li>`).join('')}</ul>`;
+            };
+
+            mainContent.innerHTML = `
+                <div class="max-w-4xl mx-auto naif-border details-bg overflow-hidden pb-10 mb-10 animate-fade-in">
+                    <div class="bg-[#1a1a1a] px-6 py-4 flex justify-between items-center text-white sticky top-0 z-10 border-b-3 border-[#1a1a1a]">
+                        <button onclick="location.reload()" class="naif-btn bg-white text-[#1a1a1a] px-5 py-2 flex items-center text-sm hover:bg-[#f4ecd8]">
+                            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> VOLTAR
+                        </button>
+                        <span class="font-display text-[#ffb703] tracking-widest">DETALHES</span>
+                    </div>
+                    <div class="p-6 md:p-10">
+                        <div class="bg-white naif-border p-8 mb-8 relative">
+                            <div class="absolute -top-4 -right-4 bg-[#ef476f] text-white px-4 py-2 font-display text-xl border-3 border-[#1a1a1a] shadow-[4px_4px_0px_0px_#1a1a1a] transform rotate-3">
+                                ATENÇÃO
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <h1 class="font-title text-3xl md:text-5xl text-[#1a1a1a] mb-4 leading-tight">${opp.title}</h1>
+                                <i data-lucide="heart" class="heart-btn w-8 h-8 ${isFav ? 'active' : ''} text-[#1a1a1a] hover:text-[#ef476f] cursor-pointer"
+                                   onclick="toggleFavorite(${opp.id})"></i>
+                            </div>
+                            <p class="font-display text-xl text-[#008c4a] mb-6">${opp.organization}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#ffe8d6] p-5 border-3 border-[#1a1a1a] rounded-xl shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.1)]">
+                                <div><span class="block text-sm text-[#e63946] font-display">LOCAL</span><span class="font-extrabold text-lg text-[#1a1a1a]">${opp.regionLabel}</span></div>
+                                <div><span class="block text-sm text-[#e63946] font-display">PRAZO</span><span class="font-extrabold text-lg text-[#1a1a1a]">${opp.deadline === 'contínuo' ? 'Contínuo' : opp.deadline}</span></div>
+                                <div class="col-span-1 md:col-span-2 mt-2 pt-2 border-t-2 border-black border-dashed">
+                                    <span class="block text-sm text-[#e63946] font-display">REMUNERAÇÃO / BENEFÍCIO</span>
+                                    <span class="font-title text-2xl text-[#008c4a]">${opp.value}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-8">
+                            <div class="bg-white naif-border p-6 md:p-8">
+                                <h3 class="font-display text-2xl mb-4 text-[#1a1a1a] flex items-center border-b-4 border-[#ffb703] pb-2 w-fit">
+                                    <i data-lucide="info" class="w-8 h-8 mr-3 text-[#ffb703]"></i> A Proposta
+                                </h3>
+                                <p class="text-[#1a1a1a] font-bold text-lg leading-relaxed">${opp.proposal || opp.description}</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-[#e0fbfc] naif-border p-6">
+                                    <h3 class="font-display text-xl mb-4 text-[#1a1a1a] flex items-center">
+                                        <i data-lucide="user-check" class="w-6 h-6 mr-2 text-[#118ab2]"></i> Perfil Procurado
+                                    </h3>
+                                    ${renderList(opp.requirements, 'check', '#118ab2')}
+                                </div>
+                                <div class="bg-[#d8f3dc] naif-border p-6">
+                                    <h3 class="font-display text-xl mb-4 text-[#1a1a1a] flex items-center">
+                                        <i data-lucide="briefcase" class="w-6 h-6 mr-2 text-[#008c4a]"></i> Na Prática (Atividades)
+                                    </h3>
+                                    ${renderList(opp.activities, 'zap', '#008c4a')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-10">
+                            <button onclick="window.open('${opp.link}', '_blank')" class="naif-btn w-full bg-[#008c4a] hover:bg-[#00703b] text-white font-title text-2xl py-6 rounded-xl flex justify-center items-center">
+                                <i data-lucide="external-link" class="w-8 h-8 mr-3"></i> APLICAR / ACESSAR
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+            window.scrollTo(0, 0);
+            // Atualiza coração na tela de detalhes
+            const heartDetail = document.querySelector('.heart-btn');
+            if(heartDetail) {
+                heartDetail.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                });
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const color = type === 'success' ? 'bg-[#008c4a]' : type === 'info' ? 'bg-[#118ab2]' : 'bg-[#1a1a1a]';
+            toast.className = `${color} text-white px-6 py-4 naif-border flex items-center transform transition-all duration-300 translate-y-10 opacity-0`;
+            toast.innerHTML = `<i data-lucide="bell" class="w-6 h-6 mr-3 text-[#ffb703]"></i><span class="font-display text-lg tracking-wide">${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
+            setTimeout(() => { toast.classList.add('translate-y-10', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 4000);
+        }
+
+        // Frase do dia aleatória
+        document.getElementById('daily-quote').innerText = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+        // Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registrado!', reg))
+                    .catch(err => console.log('Falha no SW:', err));
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            document.getElementById('search-input').addEventListener('input', e => { searchQuery = e.target.value; renderOpportunities(); });
+            document.getElementById('region-filter').addEventListener('change', e => { regionQuery = e.target.value; renderOpportunities(); });
+            document.getElementById('category-filter').addEventListener('change', e => { categoryQuery = e.target.value; renderOpportunities(); });
+            renderOpportunities();
+        });
+    </script>
+</body>
+</html>
