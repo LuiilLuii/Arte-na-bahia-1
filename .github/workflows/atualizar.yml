@@ -12,8 +12,8 @@ jobs:
       contents: write      # necessário para dar push no JSON
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.2.2   # já usa Node.js 22 internamente
+      - uses: actions/setup-python@v5.5.0 # mesma coisa
         with:
           python-version: '3.11'
       - run: pip install requests beautifulsoup4
