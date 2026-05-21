@@ -1,0 +1,59 @@
+[
+  {
+    "id": 1,
+    "type": "edital",
+    "title": "Prêmio Jovem Criador Baiano",
+    "organization": "FUNCEB",
+    "region": "salvador",
+    "regionLabel": "Bahia (Todas as regiões)",
+    "category": "artes-visuais",
+    "categoryLabel": "Artes Visuais",
+    "deadline": "2026-06-15",
+    "value": "R$ 15.000,00",
+    "description": "Edital de fomento à produção de artes visuais para jovens de 18 a 29 anos.",
+    "tags": [
+      "Fomento",
+      "Jovens"
+    ],
+    "proposal": "Financiar a criação de obras de arte inéditas.",
+    "requirements": [
+      "Ter entre 18 e 29 anos",
+      "Apresentar portfólio",
+      "Residir na Bahia"
+    ],
+    "activities": [
+      "Desenvolvimento da obra",
+      "Exposição coletiva de encerramento"
+    ],
+    "link": "https://fundacaocultural.ba.gov.br/"
+  },
+  {
+    "id": 300,
+    "type": "recurso",
+    "title": "Ateliê Coletivo do Subúrbio (ACS)",
+    "organization": "Coletivo ACS",
+    "region": "salvador",
+    "regionLabel": "Plataforma, Salvador",
+    "category": "artes-visuais",
+    "categoryLabel": "Artes Visuais / Criação",
+    "deadline": "contínuo",
+    "value": "Contribuição simbólica (ou isento)",
+    "description": "Espaço compartilhado com cavaletes, tintas básicas e ferramentas.",
+    "tags": [
+      "Ateliê",
+      "Coletivo",
+      "Baixo Custo"
+    ],
+    "proposal": "Rede de artistas periféricos que mantém um galpão com mesas, iluminação e alguns materiais.",
+    "requirements": [
+      "Residir na região metropolitana de Salvador",
+      "Disposição para ajudar na limpeza coletiva"
+    ],
+    "activities": [
+      "Produção artística livre",
+      "Participação em mutirões",
+      "Possibilidade de expor no espaço"
+    ],
+    "link": "https://www.instagram.com/explore/tags/atelieracoletivo/"
+  }
+]
